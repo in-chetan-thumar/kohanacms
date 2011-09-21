@@ -9,21 +9,21 @@
  * $version: 1.2.3
  *
  * Changelog
- * $Date: 2011-09-21 07:00:49 $
+ * $Date: 2011-09-21 07:03:07 $
  * $version: 1.0.0 
  * $version: 1.0.1 - removed multibyte comments
  *
- * $Date: 2011-09-21 07:00:49 $
+ * $Date: 2011-09-21 07:03:07 $
  * $version: 1.1.0 	- added allowPageScroll property to allow swiping and scrolling of page
  *					- changed handler signatures so one handler can be used for multiple events
- * $Date: 2011-09-21 07:00:49 $
+ * $Date: 2011-09-21 07:03:07 $
  * $version: 1.2.0 	- added click handler. This is fired if the user simply clicks and does not swipe. The event object and click target are passed to handler.
  *					- If you use the http://code.google.com/p/jquery-ui-for-ipad-and-iphone/ plugin, you can also assign jQuery mouse events to children of a touchSwipe object.
  * $version: 1.2.1 	- removed console log!
  *
  * $version: 1.2.2 	- Fixed bug where scope was not preserved in callback methods. 
  *
- * $Date: 2011-09-21 07:00:49 $
+ * $Date: 2011-09-21 07:03:07 $
  * $version: 1.2.4 	- Changed licence terms to be MIT or GPL inline with jQuery. Added check for support of touch events to stop non compatible browsers erroring.
  *
  * A jQuery plugin to capture left, right, up and down swipes on touch devices.
@@ -122,7 +122,39 @@
 			var end={x:0, y:0};
 			var delta={x:0, y:0};
 			
+						
+			fingers 		: 1,								// int - The number of fingers to trigger the swipe, 1 or 2. Default is 1.
+			threshold 		: 75,								// int - The number of pixels that the user must move their finger by before it is considered a swipe. Default is 75.
 			
+			swipe 			: null,		// Function - A catch all handler that is triggered for all swipe directions. Accepts 2 arguments, the original event object and the direction of the swipe : "left", "right", "up", "down".
+			swipeLeft		: null,		// Function - A handler that is triggered for "left" swipes. Accepts 3 arguments, the original event object, the direction of the swipe : "left", "right", "up", "down" and the distance of the swipe.
+			swipeRight		: null,		// Function - A handler that is triggered for "right" swipes. Accepts 3 arguments, the original event object, the direction of the swipe : "left", "right", "up", "down" and the distance of the swipe.
+			swipeUp			: null,		// Function - A handler that is triggered for "up" swipes. Accepts 3 arguments, the original event object, the direction of the swipe : "left", "right", "up", "down" and the distance of the swipe.
+			swipeDown		: null,		// Function - A handler that is triggered for "down" swipes. Accepts 3 arguments, the original event object, the direction of the swipe : "left", "right", "up", "down" and the distance of the swipe.
+			swipeStatus		: null,		// Function - A handler triggered for every phase of the swipe. Handler is passed 4 arguments: event : The original event object, phase:The current swipe face, either "start”, "move”, "end” or "cancel”. direction : The swipe direction, either "up”, "down”, "left " or "right”.distance : The distance of the swipe.
+			click			: null,		// Function	- A handler triggered when a user just clicks on the item, rather than swipes it. If they do not move, click is triggered, if they do move, it is not.
+			
+			triggerOnTouchEnd : true,	// Boolean, if true, the swipe events are triggered when the touch end event is received (user releases finger).  If false, it will be triggered on reaching the threshold, and then cancel the touch event automatically.
+			allowPageScroll : "auto" 	/* How the browser handles page scrolls when the user is swiping on a touchSwipe object. 
+											"auto" : all undefined swipes will cause the page to scroll in that direction.
+ 											"none" : the page will not scroll when user swipes.
+ 											"horizontal" : will force page to scroll on horizontal swipes.
+ 											"vertical" : will force page to scroll on vertical swipes.
+										*/
+		};
+		
+		
+		//Constants
+		var LEFT = "left";
+		var RIGHT = "right";
+		var UP = "up";
+		var DOWN = "down";
+		var NONE = "none";
+		var HORIZONTAL = "horizontal";
+		var VERTICAL = "vertical";
+		var AUTO = "auto";
+		
+		var PHASE_START="start";
 			/**
 			* Event handler for a touch start event. 
 			* Stops the default click event from triggering and stores where we touched
