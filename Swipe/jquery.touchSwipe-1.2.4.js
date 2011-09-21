@@ -9,21 +9,21 @@
  * $version: 1.2.3
  *
  * Changelog
- * $Date: 2011-09-21 07:03:07 $
+ * $Date: 2011-09-21 07:05:17 $
  * $version: 1.0.0 
  * $version: 1.0.1 - removed multibyte comments
  *
- * $Date: 2011-09-21 07:03:07 $
+ * $Date: 2011-09-21 07:05:17 $
  * $version: 1.1.0 	- added allowPageScroll property to allow swiping and scrolling of page
  *					- changed handler signatures so one handler can be used for multiple events
- * $Date: 2011-09-21 07:03:07 $
+ * $Date: 2011-09-21 07:05:17 $
  * $version: 1.2.0 	- added click handler. This is fired if the user simply clicks and does not swipe. The event object and click target are passed to handler.
  *					- If you use the http://code.google.com/p/jquery-ui-for-ipad-and-iphone/ plugin, you can also assign jQuery mouse events to children of a touchSwipe object.
  * $version: 1.2.1 	- removed console log!
  *
  * $version: 1.2.2 	- Fixed bug where scope was not preserved in callback methods. 
  *
- * $Date: 2011-09-21 07:03:07 $
+ * $Date: 2011-09-21 07:05:17 $
  * $version: 1.2.4 	- Changed licence terms to be MIT or GPL inline with jQuery. Added check for support of touch events to stop non compatible browsers erroring.
  *
  * A jQuery plugin to capture left, right, up and down swipes on touch devices.
@@ -154,38 +154,6 @@
 		var VERTICAL = "vertical";
 		var AUTO = "auto";
 		
-		var PHASE_START="start";
-			/**
-			* Event handler for a touch start event. 
-			* Stops the default click event from triggering and stores where we touched
-			*/
-			function touchStart(event) 
-			{
-				phase = PHASE_START;
-		
-				// get the total number of fingers touching the screen
-				fingerCount = event.touches.length;
-				
-				//clear vars..
-				distance=0;
-				direction=null;
-				
-				// check the number of fingers is what we are looking for
-				if ( fingerCount == defaults.fingers ) 
-				{
-					// get the coordinates of the touch
-					start.x = end.x = event.touches[0].pageX;
-					start.y = end.y = event.touches[0].pageY;
-					
-					if (defaults.swipeStatus)
-						triggerHandler(event, phase);
-				} 
-				else 
-				{
-					//touch with more/less than the fingers we are looking for
-					touchCancel(event);
-				}
-			}
 
 			/**
 			* Event handler for a touch move event. 
@@ -234,6 +202,38 @@
 				}
 			}
 			
+		var PHASE_START="start";
+			/**
+			* Event handler for a touch start event. 
+			* Stops the default click event from triggering and stores where we touched
+			*/
+			function touchStart(event) 
+			{
+				phase = PHASE_START;
+		
+				// get the total number of fingers touching the screen
+				fingerCount = event.touches.length;
+				
+				//clear vars..
+				distance=0;
+				direction=null;
+				
+				// check the number of fingers is what we are looking for
+				if ( fingerCount == defaults.fingers ) 
+				{
+					// get the coordinates of the touch
+					start.x = end.x = event.touches[0].pageX;
+					start.y = end.y = event.touches[0].pageY;
+					
+					if (defaults.swipeStatus)
+						triggerHandler(event, phase);
+				} 
+				else 
+				{
+					//touch with more/less than the fingers we are looking for
+					touchCancel(event);
+				}
+			}
 			/**
 			* Event handler for a touch end event. 
 			* Calculate the direction and trigger events
